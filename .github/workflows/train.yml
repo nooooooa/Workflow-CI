@@ -22,4 +22,6 @@ jobs:
           pip install mlflow pandas scikit-learn numpy
 
       - name: Run MLflow Project
-        run: mlflow run ./Workflow-CI/MLProject
+        run: |
+          cd Workflow-CI/MLProject
+          mlflow run .
