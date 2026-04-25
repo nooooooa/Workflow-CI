@@ -1,5 +1,4 @@
 name: Train ML Model
-
 on:
   push:
     branches: [ main ]
@@ -7,18 +6,25 @@ on:
 jobs:
   train:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.9'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
 
-      - name: Install dependencies
-        run: pip install mlflow pandas scikit-learn numpy
+    - name: Install dependencies
+      run: |
+        pip install mlflow pandas scikit-learn numpy
 
-      - name: Run MLflow Project
-        run: mlflow run ./MLProject
+    - name: Run Training with MLflow
+      run: |
+        mlflow run MLProject --experiment-name "Titanic Experiment" --env-manager=local
+
+    - name: Upload MLflow artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: mlflow-runs
+        path: mlruns/
